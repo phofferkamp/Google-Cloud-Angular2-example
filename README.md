@@ -1,6 +1,101 @@
-# Ng2HelloWorld
+# Google Cloud Angular2 example
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.0.
+Set up to make calls via [Google Cloud Datastore API](https://cloud.google.com/datastore/docs/reference/rest/).
+
+Following process from [Using OAuth 2.0 for Server to Server Applications](https://developers.google.com/identity/protocols/OAuth2ServiceAccount).
+
+# Sample calls
+
+All calls are POSTs with header:
+
+```
+Authorization: Bearer <access_token>
+```
+
+## Lookup
+```
+https://datastore.googleapis.com/v1/projects/{Projet ID}:lookup
+```
+```json
+{
+  "keys": [
+      {
+		  "path": [
+			  {
+				"kind": "Book",
+				  "id": 5629499534213120 
+				}
+		  ]
+    }
+  ]
+}
+```
+
+## Run Query
+```
+https://datastore.googleapis.com/v1/projects/{Projet ID}:runQuery
+```
+```json
+{
+  "query": {
+	  "kind": [
+		{
+		  "name": "Book",
+		}
+	  ],
+	  "filter": {
+		"propertyFilter": {
+		  "property": {
+				"name": "author",
+			},
+		  "op": "EQUAL",
+		  "value": {
+			  "stringValue": "fdasf",
+			}
+		}
+	  }
+	}
+}
+```
+
+## Commit
+
+Get transaction key:
+```
+https://datastore.googleapis.com/v1/projects/{Projet ID}:beginTransaction
+```
+
+Commit:
+```
+https://datastore.googleapis.com/v1/projects/{Projet ID}:commit
+```
+```json
+{
+  "mode": "TRANSACTIONAL",
+  "mutations": [
+    {
+	  "insert": {
+		  "key": {
+			  "path": [
+				{
+					"kind": "Book",
+				  "name": "newBook1" 
+				}
+			  ],
+			},
+		  "properties": {
+			"author": {
+			  "stringValue": "author1"
+			}
+		  },
+		}
+	}
+  ],
+  "transaction": "",
+}
+```
+
+# Notes
 
 ## Development server
 
